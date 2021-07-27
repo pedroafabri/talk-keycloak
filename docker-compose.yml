@@ -1,0 +1,17 @@
+services:
+  keycloak:
+    container_name: talk-keycloak
+    image: jboss/keycloak
+    ports:
+      - "8080:8080"
+    environment: 
+      - KEYCLOAK_USER="admin"
+      - KEYCLOAK_PASSWORD="admin"
+  jsapp:
+    container_name: talk-js-app
+    build: ./js-app/
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - keycloak
+    
