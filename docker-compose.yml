@@ -2,6 +2,10 @@ services:
   keycloak:
     image: jboss/keycloak:latest
     container_name: talk-keycloak
+    volumes: 
+      - ./application:/app
+    ports: 
+      - '8080:8080'
     restart: unless-stopped    
     environment:
       - KEYCLOAK_USER=admin
@@ -14,20 +18,12 @@ services:
     build: ./js-app/
     networks:
       - internal
-    expose: 
-      - 8000
-    depends_on:
-      - keycloak
-  nginx:
-    container_name: talk-nginx
-    build: ./nginx/
     ports:
-      - "80:80"
-    networks:
-      - internal
+      - '8000:8000'
+    volumes: 
+      - ./js-app/application:/app/
     depends_on:
       - keycloak
-      - jsapp
 networks:
   internal:
     driver: bridge
